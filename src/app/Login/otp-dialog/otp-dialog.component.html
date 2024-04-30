@@ -1,0 +1,28 @@
+<div style="width:363px">
+    <h2 mat-dialog-title>Please enter valid OTP</h2>
+    <div mat-dialog-content>
+        <span style="color: red;">{{this.message}}</span>
+        <form #controlForm="ngForm">
+            <div class="row">
+                <div class="col-md-2" *ngFor="let inputElem of this.ListX; index as $i">
+                    <mat-form-field appearance="outline" style="width: 48px;">
+                        <input type="password" matInput [codfFocusMe]="currentIndex === $i" (isFocused)="onFocus($i)"
+                            codfOtpValidation (newVal)="onNewVal($event, $i)" (focusNext)="onChangeFocus('next', $i)"
+                            (focusPrevious)="onChangeFocus('prev', $i)" (focusFirst)="onChangeFocus('first', $i)"
+                            (focusLast)="onChangeFocus('last', $i)" [disabled]="disabled" autocomplete="off">
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions align="end">
+        <span>
+            <button type="button" mat-button  mat-flat-button color="primary"  (click)="valdiateOtp()">
+                Validate OTP
+            </button>
+            <button type="button" mat-stroked-button color="primary" (click)="CloseDialog()">
+                Cancel
+            </button>
+        </span>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+<br /><br /><br /><br /><br /><br />
+<div class="container d-flex justify-content-center">
+    <div class="d-flex flex-column justify-content-between">
+        <div class="card mt-3 p-5">
+            <div class="logo">
+                <img src="assets/Images/Questa.png"
+                    style="height: 114%;width: 132%;background-color: white;position: relative;left: -41px;top: -41px;">
+            </div>
+        </div>
+        <div class="card two bg-white px-5 py-4 mb-3">
+            <form class="form" [formGroup]="CandidateFg" (ngSubmit)="OpenModal()">
+                <div class="form-group">
+                    <input type="email" class="form-control" id="mail" value=""
+                     formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
+                    <label class="form-control-placeholder" for="mail">Email</label>
+                    <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                        <div *ngIf="f['email'].errors['required']">Email is required</div>
+                        <div *ngIf="f['email'].errors['email']">Email must be a valid email address</div>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block btn-lg mt-1 mb-2" >
+                    <span>Login<i class="fas fa-long-arrow-alt-right ml-2"></i></span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
