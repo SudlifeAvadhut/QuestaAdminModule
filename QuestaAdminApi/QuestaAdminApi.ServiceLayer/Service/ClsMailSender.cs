@@ -34,13 +34,20 @@ namespace QuestaAdminApi.ServiceLayer.Service
                 ClsMailBodyModel ObjMailBodyForCandidate = SendEmailBodyForCandidate(TestId, "sp_getmailbodyforcandidate");
                 ClsMailBodyModel ObjMailBodyForHr = SendEmailBodyForCandidate(TestId, "sp_getmailbodyforHr");
 
-                return new Tuple<ClsMailBodyModel, ClsMailBodyModel>(ObjMailBodyForCandidate, ObjMailBodyForHr);
-                //var tasks = new Task[] {
-                //    SendEmail(ObjMailBodyForCandidate,TestId.ToString(),ModuleId,ObjMailBodyForCandidate.SendToCandidate),
-                //    SendEmail(ObjMailBodyForHr,TestId.ToString(),ModuleId,ObjMailBodyForCandidate.SendToHr)
-                //};
+                string In_TestId = Convert.ToString(TestId);
 
-                //Task.WaitAll(tasks);
+                SendEmail(ObjMailBodyForCandidate, In_TestId, ModuleId, ObjMailBodyForCandidate.SendToCandidate).GetAwaiter().GetResult();
+                SendEmail(ObjMailBodyForHr, In_TestId, ModuleId, ObjMailBodyForCandidate.SendToHr).GetAwaiter().GetResult();
+                /*
+                var tasks = new Task[] {
+                    SendEmail(ObjMailBodyForCandidate,TestId.ToString(),ModuleId,ObjMailBodyForCandidate.SendToCandidate),
+                    SendEmail(ObjMailBodyForHr,TestId.ToString(),ModuleId,ObjMailBodyForCandidate.SendToHr)
+                };
+
+                Task.WaitAll(tasks);
+                */
+
+                return new Tuple<ClsMailBodyModel, ClsMailBodyModel>(ObjMailBodyForCandidate, ObjMailBodyForHr);
             }
             catch (Exception ex)
             {
@@ -51,10 +58,10 @@ namespace QuestaAdminApi.ServiceLayer.Service
 
 
 
-        
+
         private async Task SendEmail(ClsMailBodyModel ObjMailBody, string TestId, int ModuleId,bool IsReportRequireToSend)
         {
-            DateTime DateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+           // DateTime DateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
 
             try
             {
@@ -94,8 +101,8 @@ namespace QuestaAdminApi.ServiceLayer.Service
                 var buildDir = Environment.CurrentDirectory;
 
 
-                string FooterImagePath = buildDir + "\\Images\\" + "QuestaMailFooterLogo.png";
-                byte[] FooterMailFooterImageBytes = System.IO.File.ReadAllBytes(FooterImagePath);
+                // string FooterImagePath = buildDir + "\\Images\\" + "QuestaMailFooterLogo.png";
+                byte[] FooterMailFooterImageBytes = ObjAwsConsole.DownloadFileFromAwsS3Bucket("questaenneagramassest", "images", "QuestaMailFooterLogo.png");//System.IO.File.ReadAllBytes(FooterImagePath);
                 System.IO.MemoryStream FooterMailFooterImagestreamBitmap = new System.IO.MemoryStream(FooterMailFooterImageBytes);
                 LinkedResource theEmailImage1 = new LinkedResource(FooterMailFooterImagestreamBitmap, MediaTypeNames.Image.Jpeg);
                 theEmailImage1.ContentId = "myFooterID";
@@ -103,8 +110,8 @@ namespace QuestaAdminApi.ServiceLayer.Service
                 //Add the Image to the Alternate view
                 htmlView.LinkedResources.Add(theEmailImage1);
 
-                string FacebookImagePath = buildDir + "\\Images\\" + "facebook.png";
-                byte[] FacebookMailFooterImageBytes = System.IO.File.ReadAllBytes(FacebookImagePath);
+               // string FacebookImagePath = buildDir + "\\Images\\" + "facebook.png";
+                byte[] FacebookMailFooterImageBytes = ObjAwsConsole.DownloadFileFromAwsS3Bucket("questaenneagramassest", "images", "facebook.png"); //System.IO.File.ReadAllBytes(FacebookImagePath);
                 System.IO.MemoryStream FacebookMailFooterImagestreamBitmap = new System.IO.MemoryStream(FacebookMailFooterImageBytes);
                 LinkedResource theEmailImage2 = new LinkedResource(FacebookMailFooterImagestreamBitmap, MediaTypeNames.Image.Jpeg);
                 theEmailImage2.ContentId = "myFacebookID";
@@ -112,8 +119,8 @@ namespace QuestaAdminApi.ServiceLayer.Service
                 //Add the Image to the Alternate view
                 htmlView.LinkedResources.Add(theEmailImage2);
 
-                string ATImagePath = buildDir + "\\Images\\" + "AtLogo.png";
-                byte[] ATImageBytes = System.IO.File.ReadAllBytes(ATImagePath);
+                //string ATImagePath = buildDir + "\\Images\\" + "AtLogo.png";
+                byte[] ATImageBytes = ObjAwsConsole.DownloadFileFromAwsS3Bucket("questaenneagramassest", "images", "AtLogo.png"); //System.IO.File.ReadAllBytes(ATImagePath);
                 System.IO.MemoryStream ATImagestreamBitmap = new System.IO.MemoryStream(ATImageBytes);
                 LinkedResource theEmailImage4 = new LinkedResource(ATImagestreamBitmap, MediaTypeNames.Image.Jpeg);
                 theEmailImage4.ContentId = "myAtID";
@@ -122,8 +129,8 @@ namespace QuestaAdminApi.ServiceLayer.Service
                 htmlView.LinkedResources.Add(theEmailImage4);
 
 
-                string LinkedImagePath = buildDir + "\\Images\\" + "linkedin.png";
-                byte[] LinkedImageBytes = System.IO.File.ReadAllBytes(LinkedImagePath);
+                //string LinkedImagePath = buildDir + "\\Images\\" + "linkedin.png";
+                byte[] LinkedImageBytes = ObjAwsConsole.DownloadFileFromAwsS3Bucket("questaenneagramassest", "images", "linkedin.png");//System.IO.File.ReadAllBytes(LinkedImagePath);
                 System.IO.MemoryStream LinkedImagestreamBitmap = new System.IO.MemoryStream(LinkedImageBytes);
                 LinkedResource theEmailImage5 = new LinkedResource(LinkedImagestreamBitmap, MediaTypeNames.Image.Jpeg);
                 theEmailImage5.ContentId = "myLinkedInID";

@@ -33,7 +33,7 @@ namespace QuestaAdminApi.Global.FExc
             dynamic result = new
             {
                 statuCode = statusCode,
-                ErrorMessage = ex.Message
+                ErrorMessage = ex.StackTrace
             };
 
             string _strErrormsg = _JsonConverterSvc.JsonSerializeObject(result);
