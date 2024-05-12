@@ -16,6 +16,7 @@ namespace QuestaAdminApi.ServiceLayer.ServiceExtension
             service.AddScoped<ILinkGeneration, ClsLinkGeneration>();
             service.AddScoped<IAwsConsole, ClsAwsConsole>();
             service.AddScoped<IMailSender, ClsMailSender>();
+            service.AddScoped<ICandidateDetails, ClsCandidateDetails>();
             return service;
         }
     }

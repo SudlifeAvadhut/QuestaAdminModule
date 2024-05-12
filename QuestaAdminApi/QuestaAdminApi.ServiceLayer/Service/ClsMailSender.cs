@@ -162,7 +162,11 @@ namespace QuestaAdminApi.ServiceLayer.Service
                         var contentType = new System.Net.Mime.ContentType(System.Net.Mime.MediaTypeNames.Application.Pdf);
                         var reportAttachment = new Attachment(memStream, contentType);
 
-                        reportAttachment.ContentDisposition.FileName = RecevierName + "-Questa Enneagram Assessment Profile.pdf";
+                        int _InTestId = Convert.ToInt32(TestId);
+
+                        string NameOfCandidate = getcandidatenamebaseontestid(_InTestId);
+
+                        reportAttachment.ContentDisposition.FileName = NameOfCandidate + "-Questa Enneagram Assessment Profile.pdf";
                         message.Attachments.Add(reportAttachment);
                     }
                    
@@ -252,7 +256,25 @@ namespace QuestaAdminApi.ServiceLayer.Service
             }
         }
 
-
+        private string getcandidatenamebaseontestid(int testid)
+        {
+            try
+            {
+                string fullname = string.Empty;
+                using(IDbConnection cn = Connectionmgr.connection)
+                {
+                    fullname = cn.Query<string>("select TC.FirstName + ' ' + TC.LastName from txnCandidate TC inner join txnUserTestDetails TU on TC.UserId = TU.UserId Where TU.TestId = @TestId", new
+                    {
+                        TestId = testid
+                    }).FirstOrDefault();
+                }
+                return fullname;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
 
 
 
