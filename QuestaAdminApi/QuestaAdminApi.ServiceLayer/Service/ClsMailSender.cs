@@ -142,7 +142,11 @@ namespace QuestaAdminApi.ServiceLayer.Service
                 message.AlternateViews.Add(htmlView);
 
                 message.From = new MailAddress(FROM, FROMNAME);
-                message.To.Add(new MailAddress(TO));
+
+                if(!string.IsNullOrEmpty(TO))
+                {
+                    message.To.Add(new MailAddress(TO));
+                }
                 message.Subject = SUBJECT;
                 message.Body = BODY;
 
